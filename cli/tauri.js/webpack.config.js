@@ -35,6 +35,11 @@ module.exports = {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
   },
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals()
+    // {
+    //   'fs-extra': 'Deno'
+    // }
+  ],
   target: 'node'
 }
