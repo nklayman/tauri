@@ -2,9 +2,8 @@ name: Rust
 
 on:
   push:
-    branches: [ dev ]
-  pull_request:
-    branches: [ dev ]
+    tags:
+    - 'tauri-cli-v*'
 
 env:
   CARGO_TERM_COLOR: always
