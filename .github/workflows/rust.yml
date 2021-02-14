@@ -22,13 +22,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
-          tag_name: release
+          tag_name: releases
           release_name: CLI ${{ github.ref }}
           draft: false
           prerelease: false
           owner: nklayman
           repo: tauri-binary-releases
-          commitish: 95e1b6d24f6be56511dc10163f6bd86591fbc483
+          commitish: main
       - name: Build CLI
         run: cd cli/core && cargo build --release
       - name: Upload Release Asset
