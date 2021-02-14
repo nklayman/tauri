@@ -1,4 +1,4 @@
-name: Rust
+name: Build and Publish CLI
 
 on:
   push:
@@ -22,13 +22,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: CLI ${{ github.ref }}
+          release_name: ${{ github.ref }}
           draft: false
           prerelease: false
           owner: nklayman
           repo: tauri-binary-releases
           commitish: main
-      - name: Build CLI
+      - name: Build
         run: cd cli/core && cargo build --release
       - name: Upload Release Asset
         id: upload-release-asset
