@@ -1,5 +1,5 @@
 # tauri
- <img align="right" src="app-icon.png" height="200" width="200">
+ <img align="right" src="app-icon.png" height="128" width="128">
 
 ## A fresh take on creating cross-platform apps.
 [![status](https://img.shields.io/badge/Status-Early%20Alpha-yellow.svg)](https://github.com/quasarframework/quasar/tree/tauri)
@@ -8,32 +8,36 @@
 
 ![](https://img.shields.io/github/workflow/status/tauri-apps/tauri/test%20library?label=test%20library
 )
-[![devto](https://img.shields.io/badge/documentation-site-purple.svg)](https://tauri-apps.org)
+[![devto](https://img.shields.io/badge/documentation-site-purple.svg)](https://tauri.studio)
 
 [![https://good-labs.github.io/greater-good-affirmation/assets/images/badge.svg](https://good-labs.github.io/greater-good-affirmation/assets/images/badge.svg)](https://good-labs.github.io/greater-good-affirmation)
 [![support](https://img.shields.io/badge/sponsor-Opencollective-blue.svg)](https://opencollective.com/tauri)
 
 
-Tauri is a tool for building tiny, blazing fast binaries for all major desktop platforms. You can use any front-end framework that compiles to HTML,JS and CSS for building your interface.
+Tauri is a tool for building tiny, blazing fast binaries for all major desktop platforms. You can use any front-end framework that compiles to HTML, JS and CSS for building your interface.
 
-| Component | Version |
-|-----------|---------|
-| tauri.js  | ![](https://img.shields.io/npm/v/tauri.svg)
+| Component | Version                                     |
+| --------- | ------------------------------------------- |
+| tauri.js  | ![](https://img.shields.io/npm/v/tauri.svg) |
 
 
 Please visit the main readme for further information about contributing.
 
 ## Installation
 
-The preferred method is to install this module globally:
+The preferred method is to install this module locally as a dependency:
 ```
-$ npm install --global tauri
-```
-
-You can also add it to your project and use it locally - maybe helpful for some CI pipelines:
-```
-$ yarn add --dev tauri
+$ npm install tauri
+$ yarn add tauri
 ```
 
-## License
-MIT
+## Semver
+**tauri** is following [Semantic Versioning 2.0](https://semver.org/).
+
+## Licenses
+Code: (c) 2015 - present - Daniel Thompson-Yvetot, Lucas Nogueira, Tensor, Boscop, Serge Zaitsev, George Burton and all the other amazing contributors.
+
+MIT or MIT/Apache where applicable.
+
+Logo: CC-BY-NC-ND
+- Original Tauri Logo Designs by [Daniel Thompson-Yvetot](https://github.com/nothingismagick) and [Guillaume Chau](https://github.com/akryum)

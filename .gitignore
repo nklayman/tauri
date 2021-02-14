@@ -36,6 +36,9 @@ typings/
 # Optional npm cache directory
 .npm
 
+# Optional yarn cache directory
+.yarn
+
 # Optional eslint cache
 .eslintcache
 
@@ -55,10 +58,14 @@ typings/
 .DS_Store
 .Thumbs.db
 *.sublime*
-.idea/
+.idea
 debug.log
 package-lock.json
 .vscode/settings.json
+*/.vscode/
+proptest-regressions/
+TODO.md
+
 
 # Tauri output
 /bundle.json
@@ -68,12 +75,18 @@ package-lock.json
 # rust compiled folders
 target
 
+# lock for libs
+/Cargo.lock
+/yarn.lock
+
 /cli/tauri.js/test/jest/tmp
 
 # doing this because of how our tests currently (naively) drop the tauri.conf.js in that folder
 # todo: needs a proper fic
 /cli/tauri.js/tauri.conf.js
 
-# example specific ignores
-examples/**/.cache
-examples/**/public
+# doing this because the task-runner (`mask prepare`) will clone gh:tauri-apps/examples
+/examples
+
+# ignore frida handlers
+__handlers__/

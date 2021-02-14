@@ -12,7 +12,8 @@ module.exports = {
   coverageDirectory: '<rootDir>/test/jest/coverage',
   collectCoverageFrom: [
     '<rootDir>/bin/**/*.js',
-    '<rootDir>/helpers/**/*.js'
+    '<rootDir>/helpers/**/*.js',
+    '<rootDir>/api/**/*.js'
   ],
   coverageReporters: ['json-summary', 'text', 'lcov'],
   coverageThreshold: {
@@ -27,14 +28,19 @@ module.exports = {
     '<rootDir>/test/jest/__tests__/**/*.spec.js',
     '<rootDir>/test/jest/__tests__/**/*.test.js'
   ],
-  moduleFileExtensions: ['js', 'json'],
+  moduleFileExtensions: ['ts', 'js', 'json'],
   moduleNameMapper: {
     '^~/(.*)$': '<rootDir>/$1',
+    '^dist/(.*)$': '<rootDir>/dist/$1',
     '^bin/(.*)$': '<rootDir>/bin/$1',
-    '^helpers/(.*)$': '<rootDir>/helpers/$1',
-    '^templates/(.*)$': '<rootDir>/templates/$1',
+    '^helpers/(.*)$': '<rootDir>/src/helpers/$1',
+    '^api/(.*)$': '<rootDir>/src/api/$1',
+    '^templates/(.*)$': '<rootDir>/src/templates/$1',
     '^test/(.*)$': '<rootDir>/test/$1',
     '../../package.json': '<rootDir>/package.json'
   },
-  transform: {}
+  transform: {
+    'templates[\\\\/]tauri.js': './test/jest/raw-loader-transformer.js',
+    '\\.(js|ts)$': 'babel-jest'
+  }
 }

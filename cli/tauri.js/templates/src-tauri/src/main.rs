@@ -1,15 +1,19 @@
+#![cfg_attr(
+  all(not(debug_assertions), target_os = "windows"),
+  windows_subsystem = "windows"
+)]
+
 mod cmd;
 
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
+#[derive(tauri::FromTauriContext)]
+struct Context;
 
 fn main() {
-  tauri::AppBuilder::new()
-    .invoke_handler(|_webview, arg| {
+  tauri::AppBuilder::<tauri::flavors::Wry, Context>::new()
+    .invoke_handler(|_webview, arg| async move {
       use cmd::Cmd::*;
-      match serde_json::from_str(arg) {
-        Err(_) => {}
+      match serde_json::from_str(&arg) {
+        Err(e) => Err(e.into()),
         Ok(command) => {
           match command {
             // definitions for your custom commands from Cmd here
@@ -18,9 +22,11 @@ fn main() {
               println!("{}", argument);
             }
           }
+          Ok(())
         }
       }
     })
     .build()
+    .unwrap()
     .run();
 }

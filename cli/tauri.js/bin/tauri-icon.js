@@ -1,10 +1,5 @@
 const parseArgs = require('minimist')
-const { appDir, tauriDir } = require('../helpers/app-paths')
-const logger = require('../helpers/logger')
-const log = logger('app:tauri')
-const warn = logger('app:tauri (icon)', 'red')
-const { tauricon } = require('../helpers/tauricon')
-const { resolve } = require('path')
+const { tauricon } = require('../dist/api/tauricon')
 
 /**
  * @type {object}
@@ -26,7 +21,7 @@ const argv = parseArgs(process.argv.slice(2), {
     h: 'help',
     l: 'log',
     c: 'config',
-    s: 'source',
+    i: 'icon',
     t: 'target'
   },
   boolean: ['h', 'l']
@@ -50,12 +45,13 @@ if (argv.help) {
   process.exit(0)
 }
 
-tauricon.make(
-  argv.i || resolve(appDir, 'app-icon.png'),
-  argv.t || resolve(tauriDir, 'icons'),
-  argv.c || 'optipng'
-).then(() => {
-  log('(tauricon) Completed')
-}).catch(e => {
-  warn(e)
-})
+tauricon
+  .make(argv.i, argv.t, argv.c || 'optipng')
+  .then(() => {
+    // TODO: use logger module for prettier output
+    console.log('app:tauri (tauricon) Completed')
+  })
+  .catch((e) => {
+    // TODO: use logger module for prettier output
+    console.error('app:tauri (icon)', e)
+  })

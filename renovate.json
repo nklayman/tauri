@@ -1,10 +1,82 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "schedule": "after 3am on Tuesday",
+  "extends": ["config:base"],
+  "schedule": "after 3am on Wednesday",
+  "ignorePaths": [],
+  "labels": ["chore"],
   "enabledManagers": ["cargo", "npm"],
   "cargo": {
     "enabled": true
-  }
+  },
+  "packageRules": [
+    {
+      "packagePatterns": ["*"],
+      "enabled": false
+    },
+    {
+      "enabled": true,
+      "paths": ["tauri/**"],
+      "groupName": "Tauri Core",
+      "groupSlug": "allTauriCore",
+      "commitMessagePrefix": "chore(deps)",
+      "lockFileMaintenance": {
+        "enabled": true
+      },
+      "rebaseConflictedPrs": false
+    },
+    {
+      "enabled": true,
+      "paths": ["tauri-api/**"],
+      "groupName": "Tauri API",
+      "groupSlug": "allTauriAPI",
+      "commitMessagePrefix": "chore(deps)",
+      "lockFileMaintenance": {
+        "enabled": true
+      },
+      "rebaseConflictedPrs": false
+    },
+    {
+      "enabled": true,
+      "paths": ["cli/core/**"],
+      "groupName": "Tauri CLI",
+      "groupSlug": "allTauriCLI",
+      "commitMessagePrefix": "chore(deps)",
+      "lockFileMaintenance": {
+        "enabled": true
+      },
+      "rebaseConflictedPrs": false
+    },
+    {
+      "enabled": true,
+      "paths": ["cli/tauri-bundler/**"],
+      "groupName": "Tauri Bundler",
+      "groupSlug": "allTauriBundler",
+      "commitMessagePrefix": "chore(deps)",
+      "lockFileMaintenance": {
+        "enabled": true
+      },
+      "rebaseConflictedPrs": false
+    },
+    {
+      "enabled": true,
+      "paths": ["cli/tauri.js/**"],
+      "groupName": "Tauri JS CLI",
+      "groupSlug": "allTauriJSCLI",
+      "commitMessagePrefix": "chore(deps)",
+      "lockFileMaintenance": {
+        "enabled": true
+      },
+      "rebaseConflictedPrs": false
+    },
+    {
+      "enabled": true,
+      "paths": ["api/**"],
+      "groupName": "Tauri API Definitions",
+      "groupSlug": "allTauriAPIDefinitions",
+      "commitMessagePrefix": "chore(deps)",
+      "lockFileMaintenance": {
+        "enabled": true
+      },
+      "rebaseConflictedPrs": false
+    }
+  ]
 }

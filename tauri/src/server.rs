@@ -1,28 +1,39 @@
-use tiny_http::{Header, Response};
+use std::io::Read;
+use tauri_api::assets::{AssetFetch, Assets};
+use tiny_http::{Response, StatusCode};
 
-include!(concat!(env!("OUT_DIR"), "/data.rs"));
+/// Returns the HTTP response of the given asset path.
+pub fn asset_response(path: &str, assets: &'static Assets) -> Response<impl Read> {
+  let (asset, _) = assets
+    .get(path, AssetFetch::Compress)
+    .unwrap_or_else(|| panic!("Could not read asset {}", path));
 
-pub fn asset_response(path: &str) -> Response<std::io::Cursor<Vec<u8>>> {
-  let asset = ASSETS
-    .get(&format!("{}{}", env!("TAURI_DIST_DIR"), path))
-    .unwrap()
-    .into_owned();
-  let mut response = Response::from_data(asset);
-  let header;
+  let mut headers = Vec::new();
 
-  if path.ends_with(".svg") {
-    header = Header::from_bytes(&b"Content-Type"[..], &b"image/svg+xml"[..]).unwrap();
+  // Content-Encoding
+  const CONTENT_ENCODING: &str = "Content-Encoding: gzip";
+  let content_encoding = CONTENT_ENCODING
+    .parse()
+    .unwrap_or_else(|_| panic!("Could not add {} header", CONTENT_ENCODING));
+  headers.push(content_encoding);
+
+  // Content-Type
+  let mime = if path.ends_with(".svg") {
+    "Content-Type: image/svg+xml"
   } else if path.ends_with(".css") {
-    header = Header::from_bytes(&b"Content-Type"[..], &b"text/css"[..]).unwrap();
+    "Content-Type: text/css"
   } else if path.ends_with(".html") {
-    header = Header::from_bytes(&b"Content-Type"[..], &b"text/html"[..]).unwrap();
+    "Content-Type: text/html"
   } else if path.ends_with(".js") {
-    header = Header::from_bytes(&b"Content-Type"[..], &b"text/javascript"[..]).unwrap();
+    "Content-Type: text/javascript"
   } else {
-    header = Header::from_bytes(&b"Content-Type"[..], &b"application/octet-stream"[..]).unwrap();
-  }
+    "Content-Type: application/octet-stream"
+  };
 
-  response.add_header(header);
+  let content_type = mime
+    .parse()
+    .unwrap_or_else(|_| panic!("Could not add {} header", mime));
+  headers.push(content_type);
 
-  response
+  Response::new(StatusCode(200), headers, asset, None, None)
 }

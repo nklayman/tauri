@@ -1,7 +1,9 @@
 use std::sync::Mutex;
-use web_view::WebView;
+
+use lazy_static::lazy_static;
 use uuid::Uuid;
 
+/// A salt definition.
 struct Salt {
   value: String,
   one_time: bool,
@@ -11,26 +13,36 @@ lazy_static! {
   static ref SALTS: Mutex<Vec<Salt>> = Mutex::new(vec![]);
 }
 
+/// Generates a one time Salt and returns its string representation.
 pub fn generate() -> String {
   let salt = Uuid::new_v4();
-  SALTS.lock().unwrap().push(Salt {
-    value: salt.to_string(),
-    one_time: true,
-  });
-  return salt.to_string();
+  SALTS
+    .lock()
+    .expect("Failed to lock Salt mutex: generate()")
+    .push(Salt {
+      value: salt.to_string(),
+      one_time: true,
+    });
+  salt.to_string()
 }
 
+/// Generates a static Salt and returns its string representation.
+#[allow(dead_code)]
 pub fn generate_static() -> String {
   let salt = Uuid::new_v4();
-  SALTS.lock().unwrap().push(Salt {
-    value: salt.to_string(),
-    one_time: false,
-  });
-  return salt.to_string();
+  SALTS
+    .lock()
+    .expect("Failed to lock SALT mutex: generate_static()")
+    .push(Salt {
+      value: salt.to_string(),
+      one_time: false,
+    });
+  salt.to_string()
 }
 
+/// Checks if the given Salt representation is valid.
 pub fn is_valid(salt: String) -> bool {
-  let mut salts = SALTS.lock().unwrap();
+  let mut salts = SALTS.lock().expect("Failed to lock Salt mutex: is_valid()");
   match salts.iter().position(|s| s.value == salt) {
     Some(index) => {
       if salts[index].one_time {
@@ -40,24 +52,4 @@ pub fn is_valid(salt: String) -> bool {
     }
     None => false,
   }
-}
-
-pub fn validate<T: 'static>(
-  webview: &mut WebView<'_, T>,
-  salt: String,
-  callback: String,
-  error: String,
-) {
-  crate::execute_promise(
-    webview,
-    move || {
-      if is_valid(salt) {
-        Ok("'VALID'".to_string())
-      } else {
-        Err("'INVALID SALT'".to_string())
-      }
-    },
-    callback,
-    error,
-  );
 }
